@@ -3,11 +3,11 @@
 This application is implemented as a ticket service for cinemas. 
 It allows you to create cinema sessions, 
 add new movies and cinema halls also you can check what the session is available, 
-bue ticket and check old orders.
+buy ticket and check previous orders.
 - --
 ## Used technologies
 - Apache Tomcat(v9.0.55)
-- Spring(Web, Security, ORM)
+- Spring(Web, Security, Core)
 - Hibernate
 - HQL
 - Maven
