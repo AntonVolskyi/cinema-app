@@ -1,16 +1,17 @@
 package cinema.service.impl;
 
 import cinema.dao.MovieDao;
-import cinema.lib.Inject;
-import cinema.lib.Service;
+import cinema.exception.DataProcessingException;
 import cinema.model.Movie;
 import cinema.service.MovieService;
 import java.util.List;
+import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Service;
 
 @Service
+@AllArgsConstructor
 public class MovieServiceImpl implements MovieService {
-    @Inject
-    private MovieDao movieDao;
+    private final MovieDao movieDao;
 
     @Override
     public Movie add(Movie movie) {
@@ -19,7 +20,8 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     public Movie get(Long id) {
-        return movieDao.get(id).orElseThrow(RuntimeException::new);
+        return movieDao.get(id).orElseThrow(
+                () -> new DataProcessingException("Can't get movie by id " + id));
     }
 
     @Override

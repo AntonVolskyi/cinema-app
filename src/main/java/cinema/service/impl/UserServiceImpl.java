@@ -1,23 +1,30 @@
 package cinema.service.impl;
 
 import cinema.dao.UserDao;
-import cinema.lib.Inject;
-import cinema.lib.Service;
+import cinema.exception.DataProcessingException;
 import cinema.model.User;
 import cinema.service.UserService;
-import cinema.util.HashUtil;
 import java.util.Optional;
+import lombok.AllArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 
 @Service
+@AllArgsConstructor
 public class UserServiceImpl implements UserService {
-    @Inject
-    private UserDao userDao;
+    private final PasswordEncoder encoder;
+    private final UserDao userDao;
 
     @Override
     public User add(User user) {
-        user.setSalt(HashUtil.getSalt());
-        user.setPassword(HashUtil.hashPassword(user.getPassword(), user.getSalt()));
+        user.setPassword(encoder.encode(user.getPassword()));
         return userDao.add(user);
+    }
+
+    @Override
+    public User get(Long id) {
+        return userDao.get(id).orElseThrow(
+                () -> new DataProcessingException("User with id " + id + " not found"));
     }
 
     @Override
